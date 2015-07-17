@@ -74,6 +74,7 @@ ModelObjectsWidget::ModelObjectsWidget(bool simplified_view, QWidget *parent) : 
 	connect(tree_view_tb,SIGNAL(clicked(void)),this,SLOT(changeObjectsView(void)));
 	connect(list_view_tb,SIGNAL(clicked(void)),this,SLOT(changeObjectsView(void)));
 	connect(filter_edt, SIGNAL(textChanged(QString)), this, SLOT(filterObjects()));
+    filter_edt->installEventFilter(this);
 	connect(by_id_chk, SIGNAL(toggled(bool)), this, SLOT(filterObjects()));
 }
 
@@ -94,6 +95,28 @@ bool ModelObjectsWidget::eventFilter(QObject *object, QEvent *event)
 
       return(true);
     }
+  }
+  if(object == filter_edt && event->type() == QEvent::KeyPress){
+      QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+      if(Q_LIKELY(keyEvent)){
+          if((keyEvent->key() == Qt::Key_Down) || (keyEvent->key() == Qt::Key_Up)){
+              if(tree_view_tb->isChecked())
+              {
+                  //DatabaseImportForm::filterObjects(objectstree_tw, filter_edt->text(), (by_id_chk->isChecked() ? 1 : 0));
+                  objectstree_tw->setFocus();
+              }
+              else
+              {
+                  objectslist_tbw->setFocus();
+                  QList<QTableWidgetItem*> items=objectslist_tbw->findItems(filter_edt->text(), Qt::MatchStartsWith | Qt::MatchRecursive);
+                  if(items.length()){
+                      objectslist_tbw->setCurrentItem(items[0]);
+                  }
+              }
+              return true;
+          }
+      }
+      return false;
   }
 
   return(QWidget::eventFilter(object, event));
