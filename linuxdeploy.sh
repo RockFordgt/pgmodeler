@@ -15,10 +15,18 @@ case `uname -m` in
     ;;
 esac
 
+# Where is qmake - search in $PATH
+QMAKE_PATH=`type -p qmake`
+# remove unnececery '/qmake` from the path
+QMAKE_PATH=${QMAKE_PATH%/*}
+
 # Uncomment this line if your system doesn't have LLVM (clang) compiler tools
 #QMAKE_ARGS="-r -spec linux-g++"
 QMAKE_ARGS="-r -spec linux-clang"
-QMAKE_ROOT=/usr/bin
+
+# use found qmake or system one
+QMAKE_ROOT=${QMAKE_PATH:-/usr/bin}
+
 LOG="$PWD/linuxdeploy.log"
 QT_IFW_ROOT=/opt/qt-if-1.5.0
 
@@ -219,8 +227,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "Compiling code..."
-make -j7  >> $LOG 2>&1
+#find numer of cores
+CORES_NO=`nproc`
+
+echo "Compiling code with ${CORES_NO} cores..."
+make -j${CORES_NO}  >> $LOG 2>&1
 
 if [ $? -ne 0 ]; then
   echo
