@@ -227,8 +227,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "Compiling code..."
-make -j7  >> $LOG 2>&1
+#find numer of cores
+CORES_NO=`nproc`
+
+echo "Compiling code with ${CORES_NO} cores..."
+make -j${CORES_NO}  >> $LOG 2>&1
 
 if [ $? -ne 0 ]; then
   echo
