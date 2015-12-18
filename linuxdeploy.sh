@@ -21,8 +21,8 @@ QMAKE_PATH=`type -p qmake`
 QMAKE_PATH=${QMAKE_PATH%/*}
 
 # Uncomment this line if your system doesn't have LLVM (clang) compiler tools
-#QMAKE_ARGS="-r -spec linux-g++"
-QMAKE_ARGS="-r -spec linux-clang"
+QMAKE_ARGS="-r -spec linux-g++ CONFIG+=debug"
+#QMAKE_ARGS="-r -spec linux-clang"
 
 # use found qmake or system one
 QMAKE_ROOT=${QMAKE_PATH:-/usr/bin}
@@ -215,10 +215,10 @@ if [ $BUILD_ALL -eq 1 ]; then
   rm -r $DIST_DIR/* >> $LOG 2>&1
 fi
 
-make distclean  >> $LOG 2>&1
+#make distclean  >> $LOG 2>&1
 
-echo "Running qmake..."
-$QMAKE_ROOT/qmake $QMAKE_ARGS  >> $LOG 2>&1
+#echo "Running qmake..."
+#$QMAKE_ROOT/qmake $QMAKE_ARGS  >> $LOG 2>&1
 
 if [ $? -ne 0 ]; then
   echo
@@ -313,7 +313,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-if [ $DEMO_VERSION = 0 ]; then
+if [ $DEMO_VERSION = dupa ]; then
   echo "Generating tarball..."
   rm -r $PKGNAME  >> $LOG 2>&1
   mkdir $BUILD_DIR/$PKGNAME  >> $LOG 2>&1
