@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>430</width>
-    <height>187</height>
+    <height>191</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -431,7 +431,10 @@
          <string notr="true">font-weight: normal;</string>
         </property>
         <property name="text">
-         <string>Type:</string>
+         <string>&amp;Type:</string>
+        </property>
+        <property name="buddy">
+         <cstring>type_cmb</cstring>
         </property>
        </widget>
       </item>
